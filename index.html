@@ -237,8 +237,15 @@ section{width:100%;}
 
 /* ADM INMUEBLES */
 #inmuebles{background:var(--off);}
-.inm-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
-.inm-img img{width:100%;height:480px;object-fit:cover;}
+.inm-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:2.5rem;}
+.inm-img{position:relative;}
+.inm-img img,.inm-img video{display:block;width:100%;height:480px;object-fit:cover;background:var(--navy);}
+.inm-play{position:absolute;right:1rem;bottom:1rem;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(20,19,53,0.7);border:1px solid rgba(255,255,255,0.3);color:#fff;cursor:pointer;transition:background 0.2s;}
+.inm-play:hover{background:var(--red);}
+.inm-play svg{width:16px;height:16px;fill:#fff;}
+.inm-play .i-play{display:none;}
+.inm-play[aria-pressed="true"] .i-play{display:block;}
+.inm-play[aria-pressed="true"] .i-pause{display:none;}
 .inm-services{display:flex;flex-direction:column;gap:0;}
 .inm-row{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,0.07);}
 .inm-row:first-child{padding-top:0;}
@@ -748,7 +755,14 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
     <h2 class="section-title reveal">Tu inmueble, <span>operando y documentado.</span></h2>
     <div class="inm-grid">
       <div class="inm-img reveal">
-        <img src="assets/img/inmuebles-nave.jpg" alt="Nave industrial administrada por HAID" loading="lazy">
+        <video id="inm-video" muted loop playsinline preload="metadata" poster="assets/img/inmuebles-nave-poster.jpg" aria-label="Recorrido por el interior de una nave industrial administrada por HAID">
+          <source src="assets/video/inmuebles-nave.mp4" type="video/mp4">
+          <source src="assets/video/inmuebles-nave.webm" type="video/webm">
+        </video>
+        <button class="inm-play" id="inm-play" type="button" aria-pressed="false" aria-label="Pausar video">
+          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><polygon points="7,4 20,12 7,20"/></svg>
+        </button>
       </div>
       <div class="reveal">
         <p style="font-size:1rem;color:#555;line-height:1.7;font-weight:300;margin-bottom:1.5rem;">Un inmueble mal mantenido pierde valor en silencio. En lugar de coordinar a cinco proveedores distintos, tienes un solo interlocutor que contrata, supervisa y te reporta cada mes el estado real de tu activo.</p>
@@ -1391,6 +1405,21 @@ var REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
   });
   select(0);
+})();
+
+// INMUEBLES: video en bucle; solo corre en pantalla y respeta movimiento reducido
+(function(){
+  var v=document.getElementById('inm-video'), btn=document.getElementById('inm-play');
+  if(!v||!btn)return;
+  var paused=REDUCED, visible=false;
+  function sync(){
+    btn.setAttribute('aria-pressed',paused?'true':'false');
+    btn.setAttribute('aria-label',paused?'Reproducir video':'Pausar video');
+    if(!paused&&visible){var p=v.play();if(p&&p.catch)p.catch(function(){});}else{v.pause();}
+  }
+  btn.addEventListener('click',function(){paused=!paused;sync();});
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;sync();},{threshold:0.25}).observe(v);
+  sync();
 })();
 
 // PMO: cifras que cuentan al aparecer
