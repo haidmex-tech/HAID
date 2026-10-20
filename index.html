@@ -32,7 +32,9 @@
   --green: #005C00;
   --white: #ffffff;
   --text: #1a1a2e;
+  --red-bright: #E2394F;
 }
+:focus-visible{outline:2px solid var(--red-bright);outline-offset:3px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;}
 body{font-family:'Barlow',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden;}
@@ -72,6 +74,7 @@ a{text-decoration:none;color:inherit;}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(105deg, rgba(20,19,53,0.92) 0%, rgba(20,19,53,0.75) 55%, rgba(20,19,53,0.35) 100%);}
 .hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:4rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;}
 .hero-left{}
+.hero-content>*,.dev-grid>*{min-width:0;}
 .hero-eyebrow{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:6px;color:var(--red);text-transform:uppercase;margin-bottom:1.5rem;}
 .hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.8rem,5vw,4.2rem);font-weight:800;color:#fff;line-height:1.05;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;}
 .hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem;max-width:480px;font-weight:300;}
@@ -82,18 +85,43 @@ a{text-decoration:none;color:inherit;}
 .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,0.1);}
 .hero-selector{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);padding:1.25rem 1.5rem;}
 .hero-selector label{font-size:0.8rem;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:0.5rem;}
-.hero-selector-row{display:flex;gap:0.75rem;}
-.hero-selector select{flex:1;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:0.65rem 1rem;font-family:'Barlow',sans-serif;font-size:0.9rem;cursor:pointer;}
+.hero-selector-row{display:flex;flex-wrap:wrap;gap:0.75rem;}
+.hero-selector select{flex:1 1 220px;min-width:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:0.65rem 1rem;font-family:'Barlow',sans-serif;font-size:0.9rem;cursor:pointer;}
 .hero-selector select option{background:var(--navy);color:#fff;}
 .hero-selector-btn{background:var(--red);color:#fff;border:none;padding:0.65rem 1.25rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;}
-.hero-right{display:none;}
-.hero-logo-wrap{opacity:1;}
-.hero-logo-wrap img{width:280px;filter:drop-shadow(0 4px 24px rgba(0,0,0,0.45));}
-.hero-stats{display:none;}
-.hero-stat{padding:1.25rem 2rem;text-align:center;border-right:1px solid rgba(255,255,255,0.2);}
-.hero-stat:last-child{border-right:none;}
-.hero-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:800;color:#fff;}
-.hero-stat-label{font-size:0.75rem;color:rgba(255,255,255,0.85);letter-spacing:1px;text-transform:uppercase;margin-top:0.2rem;}
+.hero-bg{animation:hero-settle 2.4s cubic-bezier(0.16,1,0.3,1) both;}
+@keyframes hero-settle{from{transform:scale(1.07);}to{transform:scale(1);}}
+
+/* HERO: reporte de valor ganado (curva S) */
+.evm{background:rgba(20,19,53,0.72);border:1px solid rgba(255,255,255,0.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:1.5rem 1.5rem 1.25rem;color:#fff;}
+.evm-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.75rem;}
+.evm-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:0.5px;}
+.evm-week{font-size:0.85rem;color:rgba(255,255,255,0.65);font-variant-numeric:tabular-nums;}
+.evm svg{display:block;width:100%;height:auto;overflow:visible;}
+.evm-grid line{stroke:rgba(255,255,255,0.08);stroke-width:1;}
+.evm-axis{fill:rgba(255,255,255,0.45);font-family:'Barlow',sans-serif;font-size:11px;}
+.evm-pv{fill:none;stroke:rgba(255,255,255,0.55);stroke-width:2;stroke-dasharray:5 5;}
+.evm-ev{fill:none;stroke:var(--red-bright);stroke-width:3;stroke-linejoin:round;}
+.evm-ac{fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round;}
+.evm-today{stroke:rgba(255,255,255,0.35);stroke-width:1;}
+.evm-dot-ev{fill:var(--red-bright);}
+.evm-dot-ac{fill:#fff;}
+.evm-legend{display:flex;flex-wrap:wrap;gap:0.4rem 1.25rem;margin-top:0.75rem;font-size:0.8rem;color:rgba(255,255,255,0.7);}
+.evm-legend span{display:inline-flex;align-items:center;gap:0.45rem;}
+.evm-legend i{display:inline-block;width:18px;height:0;border-top:2px solid #fff;}
+.evm-legend .k-pv{border-top:2px dashed rgba(255,255,255,0.55);}
+.evm-legend .k-ev{border-top:3px solid var(--red-bright);}
+.evm-kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.12);margin-top:1rem;}
+.evm-kpi{background:var(--navy);padding:0.85rem 1rem;}
+.evm-kpi-n{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;}
+.evm-kpi-l{font-size:0.8rem;color:rgba(255,255,255,0.7);margin-top:0.3rem;line-height:1.35;}
+.evm-kpi-s{font-size:0.8rem;margin-top:0.35rem;font-weight:600;}
+.evm-kpi-s.ok{color:#7fd6a4;}
+.evm-kpi-s.warn{color:#ffb4a8;}
+.evm-scrub{margin-top:1rem;}
+.evm-scrub label{display:block;font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.35rem;}
+.evm-scrub input{width:100%;accent-color:var(--red-bright);cursor:ew-resize;}
+.evm-note{font-size:0.75rem;color:rgba(255,255,255,0.45);margin-top:0.6rem;}
 
 /* SECTION COMMONS */
 section{width:100%;}
@@ -101,7 +129,8 @@ section{width:100%;}
 .section-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:6px;color:var(--red);text-transform:uppercase;margin-bottom:1rem;}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;text-transform:uppercase;letter-spacing:1px;line-height:1.05;}
 .section-title span{color:var(--red);}
-.section-sub{font-size:1.05rem;color:#555;line-height:1.7;margin-top:1rem;max-width:640px;font-weight:300;}
+.section-sub,.section-intro{font-size:1.05rem;color:#555;line-height:1.7;margin-top:1rem;max-width:640px;font-weight:300;}
+.section-intro{max-width:760px;margin-bottom:3rem;}
 .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
@@ -109,10 +138,20 @@ section{width:100%;}
 #como{background:var(--navy);}
 #como .section-title{color:#fff;}
 #como .section-sub{color:rgba(255,255,255,0.7);}
-.fases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;margin-top:3rem;}
+.fases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;margin-top:3rem;position:relative;}
+.fases-rail{position:absolute;top:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.1);}
+.fases-rail i{display:block;height:100%;width:0;background:var(--red-bright);transition:width 1.6s cubic-bezier(0.65,0,0.35,1);}
+.fases-grid.run .fases-rail i{width:100%;}
 .fase-card{padding:2rem 1.75rem;border-right:1px solid rgba(255,255,255,0.08);position:relative;}
 .fase-card:last-child{border-right:none;}
-.fase-num{font-family:'Barlow Condensed',sans-serif;font-size:3.5rem;font-weight:800;color:var(--red);opacity:0.3;line-height:1;margin-bottom:0.5rem;}
+.fase-card::before{content:'';position:absolute;top:-5px;left:1.75rem;width:12px;height:12px;background:var(--navy);border:2px solid rgba(255,255,255,0.25);border-radius:50%;transition:background 0.3s,border-color 0.3s;}
+.fase-num{font-family:'Barlow Condensed',sans-serif;font-size:3.5rem;font-weight:800;color:var(--red);opacity:0.3;line-height:1;margin-bottom:0.5rem;transition:opacity 0.4s,color 0.4s;}
+.fases-grid.run .fase-card::before{background:var(--red-bright);border-color:var(--red-bright);}
+.fases-grid.run .fase-num{opacity:1;color:var(--red-bright);}
+.fases-grid.run .fase-card:nth-child(2)::before,.fases-grid.run .fase-card:nth-child(2) .fase-num{transition-delay:0s;}
+.fases-grid.run .fase-card:nth-child(3)::before,.fases-grid.run .fase-card:nth-child(3) .fase-num{transition-delay:0.4s;}
+.fases-grid.run .fase-card:nth-child(4)::before,.fases-grid.run .fase-card:nth-child(4) .fase-num{transition-delay:0.8s;}
+.fases-grid.run .fase-card:nth-child(5)::before,.fases-grid.run .fase-card:nth-child(5) .fase-num{transition-delay:1.2s;}
 .fase-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem;}
 .fase-body{font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.6;}
 .fases-bloques{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;}
@@ -130,18 +169,48 @@ section{width:100%;}
 
 /* SERVICIOS */
 #servicios{background:var(--off);}
-.servicios-header{display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;margin-bottom:3rem;}
+.servicios-header{max-width:68ch;margin-bottom:3rem;}
 .servicios-intro p{font-size:1rem;color:#555;line-height:1.7;margin-top:1rem;font-weight:300;}
-.servicios-table{width:100%;border-collapse:collapse;}
-.servicios-table thead tr{background:var(--navy);}
-.servicios-table thead th{padding:1rem 1.25rem;text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;}
-.servicios-table tbody tr{border-bottom:1px solid rgba(0,0,0,0.06);transition:background 0.2s;}
-.servicios-table tbody tr:hover{background:rgba(169,20,40,0.04);}
-.servicios-table td{padding:1.1rem 1.25rem;vertical-align:top;font-size:0.9rem;}
-.servicios-table td:first-child{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;width:220px;}
-.servicios-table td:nth-child(2){color:#444;line-height:1.5;}
-.servicios-table td:last-child{color:#666;font-size:0.85rem;font-style:italic;line-height:1.4;}
-.num-badge{display:inline-block;width:24px;height:24px;background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;text-align:center;line-height:24px;margin-right:0.5rem;flex-shrink:0;}
+/* Servicios: lista + panel de detalle (acordeón en móvil) */
+.svc{display:grid;grid-template-columns:minmax(260px,5fr) 7fr;gap:0;background:#fff;border:1px solid rgba(0,0,0,0.08);}
+.svc-list{list-style:none;border-right:1px solid rgba(0,0,0,0.08);}
+.svc-item{border-bottom:1px solid rgba(0,0,0,0.06);}
+.svc-item:last-child{border-bottom:none;}
+.svc-btn{width:100%;display:flex;align-items:center;gap:0.85rem;background:none;border:none;text-align:left;cursor:pointer;padding:0.95rem 1.25rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:0.5px;text-transform:uppercase;color:var(--navy);position:relative;transition:background 0.2s,color 0.2s;}
+.svc-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--red);transition:width 0.25s cubic-bezier(0.16,1,0.3,1);}
+.svc-btn:hover{background:rgba(169,20,40,0.04);}
+.svc-btn[aria-selected="true"],.svc-btn[aria-expanded="true"]{background:var(--off);color:var(--red);}
+.svc-btn[aria-selected="true"]::before,.svc-btn[aria-expanded="true"]::before{width:4px;}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--navy);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.8rem;flex-shrink:0;transition:background 0.2s;}
+.svc-btn[aria-selected="true"] .num-badge,.svc-btn[aria-expanded="true"] .num-badge{background:var(--red);}
+.svc-body{display:none;}
+.svc-panel{padding:2.5rem 2.75rem;position:relative;min-height:100%;}
+.svc-panel-num{font-family:'Barlow Condensed',sans-serif;font-size:8rem;font-weight:800;line-height:0.8;color:rgba(20,19,53,0.06);position:absolute;bottom:2rem;right:2.25rem;pointer-events:none;font-variant-numeric:tabular-nums;}
+.svc-panel h3{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;text-transform:uppercase;color:var(--navy);line-height:1.05;margin-bottom:1rem;max-width:80%;}
+.svc-panel .svc-what{font-size:1.05rem;color:#444;line-height:1.7;max-width:60ch;}
+.svc-deliv{margin-top:2rem;border-top:1px solid rgba(0,0,0,0.08);padding-top:1.25rem;}
+.svc-deliv h4{font-size:0.85rem;font-weight:600;color:var(--red);margin-bottom:0.4rem;}
+.svc-deliv p{font-size:0.95rem;color:#555;line-height:1.6;}
+.svc-panel-inner{animation:svc-in 0.35s cubic-bezier(0.16,1,0.3,1);}
+@keyframes svc-in{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:none;}}
+
+/* Desarrolladores: el rango del estimado se cierra por etapa */
+.cost{margin-top:1.5rem;}
+.cost-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+.cost-step{background:var(--off);border:none;border-top:3px solid var(--gray);padding:0.7rem 0.5rem 0.6rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.3px;color:#666;cursor:pointer;text-align:left;line-height:1.15;transition:border-color 0.25s,color 0.25s,background 0.25s;}
+.cost-step:hover{color:var(--navy);}
+.cost-step.done{border-top-color:rgba(169,20,40,0.45);}
+.cost-step[aria-selected="true"]{border-top-color:var(--red);color:var(--red);background:#fff;}
+.cost-meter{margin-top:1.5rem;}
+.cost-meter-l{display:flex;justify-content:space-between;font-size:0.8rem;color:#777;margin-bottom:0.5rem;}
+.cost-track{position:relative;height:44px;background:repeating-linear-gradient(90deg,rgba(20,19,53,0.07) 0 1px,transparent 1px 10%);border-bottom:1px solid rgba(20,19,53,0.2);}
+.cost-band{position:absolute;top:8px;bottom:8px;left:50%;width:80%;transform:translateX(-50%);background:rgba(169,20,40,0.14);border-left:2px solid var(--red);border-right:2px solid var(--red);transition:width 0.6s cubic-bezier(0.65,0,0.35,1);}
+.cost-target{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--navy);}
+.cost-detail{margin-top:1.25rem;min-height:120px;}
+.cost-detail h4{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;text-transform:uppercase;color:var(--navy);margin-bottom:0.4rem;}
+.cost-detail p{font-size:0.95rem;color:#444;line-height:1.6;}
+.cost-detail .cost-deliv{font-size:0.88rem;color:#666;margin-top:0.5rem;}
+.cost-detail .cost-deliv strong{color:var(--red);font-weight:600;}
 .servicios-cierre{margin-top:2rem;background:var(--navy);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .servicios-cierre p{color:rgba(255,255,255,0.8);font-size:0.9rem;font-style:italic;}
 .servicios-cierre a{background:var(--red);color:#fff;padding:0.65rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
@@ -150,12 +219,6 @@ section{width:100%;}
 #desarrolladores{background:var(--white);}
 .dev-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
 .dev-intro p{font-size:1rem;color:#555;line-height:1.7;margin-top:1rem;font-weight:300;}
-.dev-table{margin-top:1.5rem;width:100%;border-collapse:collapse;}
-.dev-table tr{border-bottom:1px solid rgba(0,0,0,0.07);}
-.dev-table td{padding:0.9rem 0;font-size:0.88rem;vertical-align:top;}
-.dev-table td:first-child{width:130px;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;font-size:0.85rem;color:var(--red);}
-.dev-table td:nth-child(2){color:#444;padding-right:1rem;}
-.dev-table td:last-child{color:#777;font-size:0.82rem;font-style:italic;}
 .dev-cta-box{background:var(--off);border-left:4px solid var(--red);padding:1.5rem;margin-top:1.5rem;}
 .dev-cta-box p{font-size:0.9rem;color:#444;line-height:1.6;margin-bottom:1rem;}
 .dev-img{position:relative;overflow:hidden;}
@@ -284,7 +347,7 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.6rem;}
 .footer-col a{font-size:0.85rem;color:rgba(255,255,255,0.55);transition:color 0.2s;}
 .footer-col a:hover{color:var(--red);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding:1.25rem 2rem;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;gap:1rem;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding:1.25rem 2rem;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
 .footer-bottom p{font-size:0.78rem;color:rgba(255,255,255,0.3);}
 .footer-bottom-links{display:flex;gap:1.5rem;}
 .footer-bottom-links a{font-size:0.78rem;color:rgba(255,255,255,0.3);transition:color 0.2s;}
@@ -306,8 +369,14 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hero-content{grid-template-columns:1fr;}
-  .hero-right{display:none;}
+  .hero-content{grid-template-columns:1fr;gap:2.5rem;}
+  .svc{grid-template-columns:1fr;}
+  .svc-list{border-right:none;}
+  .svc-panel{display:none;}
+  .svc-btn[aria-expanded="true"]+.svc-body{display:block;padding:0.25rem 1.25rem 1.5rem 3.35rem;animation:svc-in 0.3s cubic-bezier(0.16,1,0.3,1);}
+  .svc-body h3{display:none;}
+  .svc-body .svc-what{font-size:0.95rem;color:#444;line-height:1.6;}
+  .svc-body .svc-deliv{margin-top:1rem;padding-top:0.85rem;}
   .servicios-header{grid-template-columns:1fr;}
   .fases-bloques{grid-template-columns:1fr;}
   .dev-grid{grid-template-columns:1fr;}
@@ -324,11 +393,13 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
   .mobile-menu{display:block;}
   .fases-grid{grid-template-columns:1fr 1fr;}
   .sectores-wrap{flex-direction:column;min-height:auto;}.sector-tab{min-height:60px;}.sector-tab.active{min-height:280px;}.sector-tab-name{writing-mode:horizontal-tb;transform:none;font-size:1.1rem;}
-  .hero-stats{grid-template-columns:1fr;}
-  .hero-stat{border-right:none;border-bottom:1px solid rgba(255,255,255,0.2);}
-  .hero-stat:last-child{border-bottom:none;}
+  .fases-rail,.fase-card::before{display:none;}
+  .evm{padding:1.25rem 1rem 1rem;}
 }
 @media(max-width:480px){
+  .cost-steps{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(108px,1fr);overflow-x:auto;}
+  .svc-panel h3{font-size:1.6rem;}
+  .evm-axis{font-size:17px;}
   .fases-grid{grid-template-columns:1fr;}
 
   .footer-inner{grid-template-columns:1fr;}
@@ -443,6 +514,51 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
         </div>
       </div>
     </div>
+    <div class="hero-right">
+      <figure class="evm" aria-labelledby="evm-title">
+        <div class="evm-head">
+          <figcaption class="evm-title" id="evm-title">Así se ve tu proyecto cada semana</figcaption>
+          <span class="evm-week" id="evm-week" aria-live="polite">Semana 22 de 40</span>
+        </div>
+        <svg viewBox="0 0 480 250" role="img" aria-label="Curva S: valor planeado, valor ganado y costo real a lo largo de 40 semanas">
+          <g class="evm-grid">
+            <line x1="40" y1="20" x2="460" y2="20"/><line x1="40" y1="70" x2="460" y2="70"/><line x1="40" y1="120" x2="460" y2="120"/><line x1="40" y1="170" x2="460" y2="170"/><line x1="40" y1="220" x2="460" y2="220"/>
+          </g>
+          <text class="evm-axis" x="32" y="24" text-anchor="end">100%</text>
+          <text class="evm-axis" x="32" y="124" text-anchor="end">50%</text>
+          <text class="evm-axis" x="32" y="224" text-anchor="end">0%</text>
+          <text class="evm-axis" x="40" y="242">Inicio</text>
+          <text class="evm-axis" x="460" y="242" text-anchor="end">Entrega</text>
+          <path class="evm-pv" id="evm-pv" d=""/>
+          <path class="evm-ac" id="evm-ac" d=""/>
+          <path class="evm-ev" id="evm-ev" d=""/>
+          <line class="evm-today" id="evm-today" x1="40" y1="14" x2="40" y2="220"/>
+          <circle class="evm-dot-ac" id="evm-dot-ac" r="4" cx="40" cy="220"/>
+          <circle class="evm-dot-ev" id="evm-dot-ev" r="5" cx="40" cy="220"/>
+        </svg>
+        <div class="evm-legend" aria-hidden="true">
+          <span><i class="k-pv"></i>Planeado</span>
+          <span><i class="k-ev"></i>Avance real (ganado)</span>
+          <span><i></i>Costo real</span>
+        </div>
+        <div class="evm-kpis">
+          <div class="evm-kpi">
+            <div class="evm-kpi-n" id="evm-cpi">1.00</div>
+            <div class="evm-kpi-l">CPI: valor ganado por cada peso gastado</div>
+            <div class="evm-kpi-s ok" id="evm-cpi-s">&nbsp;</div>
+          </div>
+          <div class="evm-kpi">
+            <div class="evm-kpi-n" id="evm-spi">1.00</div>
+            <div class="evm-kpi-l">SPI: avance logrado contra el programado</div>
+            <div class="evm-kpi-s ok" id="evm-spi-s">&nbsp;</div>
+          </div>
+        </div>
+        <div class="evm-scrub">
+          <label for="evm-range">Mueve la semana para ver cómo cambian los indicadores</label>
+          <input type="range" id="evm-range" min="2" max="40" step="1" value="22">
+        </div>
+        <p class="evm-note">Ejemplo ilustrativo del reporte de valor ganado que recibe cada cliente.</p>
+      </figure>
     </div>
   </div>
 </section>
@@ -452,8 +568,9 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
   <div class="section-inner">
     <p class="section-eyebrow reveal">Metodología</p>
     <h2 class="section-title reveal"><span>Cómo</span> trabajamos</h2>
-    <p class="section-sub reveal">En cinco segundos el visitante debe entender que HAID Project Management dirige su proyecto desde la preconstrucción hasta la entrega, en su nombre.</p>
+    <p class="section-sub reveal">Dirigimos tu proyecto en tu nombre, desde la preconstrucción hasta la entrega, en cuatro fases.</p>
     <div class="fases-grid reveal">
+      <div class="fases-rail" aria-hidden="true"><i></i></div>
       <div class="fase-card">
         <div class="fase-num">01</div>
         <div class="fase-title">Preconstrucción</div>
@@ -516,28 +633,52 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
         <p style="margin-top:1rem;">Entre el dueño, el diseñador y los contratistas, HAID es quien responde por el resultado completo.</p>
       </div>
     </div>
-    <div class="reveal" style="overflow-x:auto;">
-      <table class="servicios-table">
-        <thead>
-          <tr>
-            <th>Servicio</th>
-            <th>Qué hace HAID</th>
-            <th>Entregable</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><span class="num-badge">01</span>Preconstrucción</td><td>Revisa factibilidad, alcance, presupuesto y programa antes de licitar; detecta riesgos de diseño y constructibilidad.</td><td>Presupuesto y programa base, matriz de riesgos.</td></tr>
-          <tr><td><span class="num-badge">02</span>Licitación y Contratación</td><td>Integra paquetes de licitación, precalifica contratistas, compara propuestas en igualdad de alcance y acompaña la negociación.</td><td>Cuadros comparativos y recomendación de adjudicación.</td></tr>
-          <tr><td><span class="num-badge">03</span>Gerencia de Proyectos</td><td>Dirige el proyecto de principio a fin: alcance, presupuesto, programa, equipo y riesgos.</td><td>Plan de ejecución del proyecto y reporte ejecutivo periódico.</td></tr>
-          <tr><td><span class="num-badge">04</span>Gerencia de Construcción</td><td>Coordina contratistas, proveedores y frentes de obra en sitio; resuelve interferencias antes de que cuesten.</td><td>Programa maestro actualizado, minutas y bitácora.</td></tr>
-          <tr><td><span class="num-badge">05</span>Supervisión de Obra</td><td>Verifica en campo que lo construido corresponda a planos, especificaciones y normas, con independencia del contratista.</td><td>Reportes de supervisión, registro fotográfico y no conformidades.</td></tr>
-          <tr><td><span class="num-badge">06</span>Control de Costos</td><td>Presupuesto base, revisión de estimaciones, órdenes de cambio y proyección del costo final.</td><td>Estado de costos con desviaciones y costo proyectado al cierre.</td></tr>
-          <tr><td><span class="num-badge">07</span>Programación y Control</td><td>Programa base, avance físico-financiero y valor ganado (CPI, SPI) para anticipar desviaciones.</td><td>Curva S, indicadores y alertas tempranas.</td></tr>
-          <tr><td><span class="num-badge">08</span>Aseguramiento de Calidad</td><td>Plan de calidad, pruebas, inspecciones y liberaciones con procesos alineados a ISO 9001.</td><td>Plan de inspección y pruebas, expediente de calidad.</td></tr>
-          <tr><td><span class="num-badge">09</span>Administración de Contratos</td><td>Control de estimaciones, órdenes de cambio, reclamaciones y finiquitos durante la ejecución.</td><td>Registro de órdenes de cambio y finiquitos firmados.</td></tr>
-          <tr><td><span class="num-badge">10</span>Cierre y Entrega</td><td>Pruebas finales, lista de pendientes, planos finales, manuales y garantías.</td><td>Expediente de entrega completo.</td></tr>
-        </tbody>
-      </table>
+    <div class="svc reveal">
+      <ul class="svc-list" role="tablist" aria-orientation="vertical" aria-label="Servicios de dirección de proyectos">
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b01" role="tab" aria-selected="true" aria-expanded="true" aria-controls="svc-panel" data-n="01"><span class="num-badge">01</span>Preconstrucción</button>
+          <div class="svc-body"><h3>Preconstrucción</h3><p class="svc-what">Revisa factibilidad, alcance, presupuesto y programa antes de licitar; detecta riesgos de diseño y constructibilidad.</p><div class="svc-deliv"><h4>Entregable</h4><p>Presupuesto y programa base, matriz de riesgos.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b02" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="02"><span class="num-badge">02</span>Licitación y Contratación</button>
+          <div class="svc-body"><h3>Licitación y Contratación</h3><p class="svc-what">Integra paquetes de licitación, precalifica contratistas, compara propuestas en igualdad de alcance y acompaña la negociación.</p><div class="svc-deliv"><h4>Entregable</h4><p>Cuadros comparativos y recomendación de adjudicación.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b03" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="03"><span class="num-badge">03</span>Gerencia de Proyectos</button>
+          <div class="svc-body"><h3>Gerencia de Proyectos</h3><p class="svc-what">Dirige el proyecto de principio a fin: alcance, presupuesto, programa, equipo y riesgos.</p><div class="svc-deliv"><h4>Entregable</h4><p>Plan de ejecución del proyecto y reporte ejecutivo periódico.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b04" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="04"><span class="num-badge">04</span>Gerencia de Construcción</button>
+          <div class="svc-body"><h3>Gerencia de Construcción</h3><p class="svc-what">Coordina contratistas, proveedores y frentes de obra en sitio; resuelve interferencias antes de que cuesten.</p><div class="svc-deliv"><h4>Entregable</h4><p>Programa maestro actualizado, minutas y bitácora.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b05" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="05"><span class="num-badge">05</span>Supervisión de Obra</button>
+          <div class="svc-body"><h3>Supervisión de Obra</h3><p class="svc-what">Verifica en campo que lo construido corresponda a planos, especificaciones y normas, con independencia del contratista.</p><div class="svc-deliv"><h4>Entregable</h4><p>Reportes de supervisión, registro fotográfico y no conformidades.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b06" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="06"><span class="num-badge">06</span>Control de Costos</button>
+          <div class="svc-body"><h3>Control de Costos</h3><p class="svc-what">Presupuesto base, revisión de estimaciones, órdenes de cambio y proyección del costo final.</p><div class="svc-deliv"><h4>Entregable</h4><p>Estado de costos con desviaciones y costo proyectado al cierre.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b07" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="07"><span class="num-badge">07</span>Programación y Control</button>
+          <div class="svc-body"><h3>Programación y Control</h3><p class="svc-what">Programa base, avance físico-financiero y valor ganado (CPI, SPI) para anticipar desviaciones.</p><div class="svc-deliv"><h4>Entregable</h4><p>Curva S, indicadores y alertas tempranas.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b08" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="08"><span class="num-badge">08</span>Aseguramiento de Calidad</button>
+          <div class="svc-body"><h3>Aseguramiento de Calidad</h3><p class="svc-what">Plan de calidad, pruebas, inspecciones y liberaciones con procesos alineados a ISO 9001.</p><div class="svc-deliv"><h4>Entregable</h4><p>Plan de inspección y pruebas, expediente de calidad.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b09" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="09"><span class="num-badge">09</span>Administración de Contratos</button>
+          <div class="svc-body"><h3>Administración de Contratos</h3><p class="svc-what">Control de estimaciones, órdenes de cambio, reclamaciones y finiquitos durante la ejecución.</p><div class="svc-deliv"><h4>Entregable</h4><p>Registro de órdenes de cambio y finiquitos firmados.</p></div></div>
+        </li>
+        <li class="svc-item">
+          <button class="svc-btn" id="svc-b10" role="tab" aria-selected="false" aria-expanded="false" aria-controls="svc-panel" data-n="10"><span class="num-badge">10</span>Cierre y Entrega</button>
+          <div class="svc-body"><h3>Cierre y Entrega</h3><p class="svc-what">Pruebas finales, lista de pendientes, planos finales, manuales y garantías.</p><div class="svc-deliv"><h4>Entregable</h4><p>Expediente de entrega completo.</p></div></div>
+        </li>
+      </ul>
+      <div class="svc-panel" id="svc-panel" role="tabpanel" aria-labelledby="svc-b01" aria-live="polite">
+        <div class="svc-panel-inner"><span class="svc-panel-num" aria-hidden="true">01</span><h3>Preconstrucción</h3><p class="svc-what">Revisa factibilidad, alcance, presupuesto y programa antes de licitar; detecta riesgos de diseño y constructibilidad.</p><div class="svc-deliv"><h4>Entregable</h4><p>Presupuesto y programa base, matriz de riesgos.</p></div></div>
+      </div>
     </div>
     <div class="servicios-cierre reveal">
       <p>"Cada peso, cada día y cada decisión de tu proyecto, documentados y defendibles."</p>
@@ -554,13 +695,24 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
     <div class="dev-grid">
       <div class="reveal">
         <p style="font-size:1rem;color:#555;line-height:1.7;font-weight:300;margin:1rem 0 1.5rem;">Un desarrollo se gana o se pierde en el presupuesto. Calculamos el costo de tu proyecto desde la etapa de factibilidad y lo controlamos hasta la entrega, para que el número con el que decidiste invertir sea el número con el que terminas.</p>
-        <table class="dev-table">
-          <tr><td>Factibilidad</td><td>Costo paramétrico por m² y por tipología, antes de tener proyecto ejecutivo.</td><td>Estimado con rango y supuestos documentados.</td></tr>
-          <tr><td>Proyecto ejecutivo</td><td>Cuantificación y presupuesto detallado por partidas.</td><td>Catálogo de conceptos y presupuesto base.</td></tr>
-          <tr><td>Contratación</td><td>Comparativo de propuestas contra el presupuesto base.</td><td>Cuadro comparativo y recomendación de adjudicación.</td></tr>
-          <tr><td>Obra</td><td>Control de estimaciones, órdenes de cambio y costo proyectado al cierre.</td><td>Reporte mensual de costos y desviaciones.</td></tr>
-          <tr><td>Cierre</td><td>Conciliación final contra el presupuesto aprobado.</td><td>Costo real por m², útil para el siguiente desarrollo.</td></tr>
-        </table>
+        <div class="cost">
+          <div class="cost-steps" role="tablist" aria-label="Etapas del desarrollo">
+            <button class="cost-step" role="tab" aria-selected="true" data-w="82" data-what="Costo paramétrico por m² y por tipología, antes de tener proyecto ejecutivo." data-deliv="Estimado con rango y supuestos documentados.">Factibilidad</button>
+            <button class="cost-step" role="tab" aria-selected="false" data-w="56" data-what="Cuantificación y presupuesto detallado por partidas." data-deliv="Catálogo de conceptos y presupuesto base.">Proyecto ejecutivo</button>
+            <button class="cost-step" role="tab" aria-selected="false" data-w="34" data-what="Comparativo de propuestas contra el presupuesto base." data-deliv="Cuadro comparativo y recomendación de adjudicación.">Contratación</button>
+            <button class="cost-step" role="tab" aria-selected="false" data-w="16" data-what="Control de estimaciones, órdenes de cambio y costo proyectado al cierre." data-deliv="Reporte mensual de costos y desviaciones.">Obra</button>
+            <button class="cost-step" role="tab" aria-selected="false" data-w="2" data-what="Conciliación final contra el presupuesto aprobado." data-deliv="Costo real por m², útil para el siguiente desarrollo.">Cierre</button>
+          </div>
+          <div class="cost-meter" aria-hidden="true">
+            <div class="cost-meter-l"><span>Qué tan cerrado está el estimado alrededor del costo final</span></div>
+            <div class="cost-track"><div class="cost-band" id="cost-band"></div><div class="cost-target"></div></div>
+          </div>
+          <div class="cost-detail" id="cost-detail" role="tabpanel" aria-live="polite">
+            <h4>Factibilidad</h4>
+            <p>Costo paramétrico por m² y por tipología, antes de tener proyecto ejecutivo.</p>
+            <p class="cost-deliv"><strong>Entregable:</strong> Estimado con rango y supuestos documentados.</p>
+          </div>
+        </div>
         <div class="dev-cta-box">
           <p>¿Estás por definir tu próximo desarrollo? Envíanos el programa arquitectónico y te decimos qué necesitamos para estimar su costo.</p>
           <a href="#contacto" class="btn-primary" style="font-size:0.85rem;">Enviar programa →</a>
@@ -636,9 +788,9 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
           <p>Una empresa del sector industrial ejecutaba 16 proyectos en paralelo con un valor conjunto superior a 1,500 millones de pesos sin un sistema unificado de control. HAID diseñó la estructura de PMO, configuró las plataformas de gestión y capacitó al equipo directivo y operativo para operar el sistema de forma autónoma. En menos de 90 días la dirección recuperó visibilidad completa sobre costos y avance físico — sin depender de ningún externo para el día a día.</p>
         </div>
         <div class="pmo-metrics reveal">
-          <div class="pmo-metric"><div class="pmo-metric-n">16</div><div class="pmo-metric-l">Proyectos integrados</div></div>
-          <div class="pmo-metric"><div class="pmo-metric-n">$1.5B</div><div class="pmo-metric-l">MXN bajo control interno</div></div>
-          <div class="pmo-metric"><div class="pmo-metric-n">&lt;90</div><div class="pmo-metric-l">Días de implantación</div></div>
+          <div class="pmo-metric"><div class="pmo-metric-n" data-count="16" data-fmt="int">16</div><div class="pmo-metric-l">Proyectos integrados</div></div>
+          <div class="pmo-metric"><div class="pmo-metric-n" data-count="1.5" data-fmt="b">$1.5B</div><div class="pmo-metric-l">MXN bajo control interno</div></div>
+          <div class="pmo-metric"><div class="pmo-metric-n" data-count="90" data-fmt="lt">&lt;90</div><div class="pmo-metric-l">Días de implantación</div></div>
         </div>
       </div>
       <div>
@@ -701,7 +853,7 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
   <div class="section-inner">
     <p class="section-eyebrow reveal" style="color:var(--red);">Experiencia sectorial</p>
     <h2 class="section-title reveal" style="color:#fff;">Sectores que <span>atendemos</span></h2>
-    <p class="section-sub reveal" style="color:rgba(255,255,255,0.6);">Selecciona un sector para conocer nuestra experiencia.</p>
+    <p class="section-sub reveal" style="color:rgba(255,255,255,0.6);">Elige un sector para ver nuestra experiencia. Haz clic en el sector abierto para ampliar la foto.</p>
     <div class="sectores-wrap reveal">
       <div class="sector-tab active" onclick="activarSector(this)">
         <div class="sector-tab-bg" style="background-image:url('assets/img/sector-comercial.jpg');"></div>
@@ -1116,28 +1268,127 @@ var revealObs=new IntersectionObserver(function(entries){
 },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
 revealEls.forEach(function(el){revealObs.observe(el);});
 
-// COUNTUP
-var counted=false;
-var statObs=new IntersectionObserver(function(entries){
-  if(entries[0].isIntersecting&&!counted){
-    counted=true;
-    var el=document.querySelector('[data-count="23"]');
-    if(el)animCount(el,0,23,1200,'');
+var REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// HERO: curva S de valor ganado (PV planeado, EV ganado, AC costo real)
+(function(){
+  var T=40,X0=40,X1=460,Y0=220,Y1=20;
+  function s(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);}
+  function pv(w){return 100*s(w/T);}
+  function ev(w){return pv(w)*(1-0.07*Math.sin(Math.PI*w/T));}
+  function ac(w){return ev(w)*(0.97+0.045*Math.sin(w/4.5));}
+  function px(w){return X0+(X1-X0)*w/T;}
+  function py(v){return Y0-(Y0-Y1)*v/100;}
+  function path(f,to){var d='',w;for(w=0;w<=to+1e-6;w+=0.5){d+=(w?'L':'M')+px(w).toFixed(1)+' '+py(f(w)).toFixed(1);}return d;}
+  var $=function(id){return document.getElementById(id);};
+  if(!$('evm-pv'))return;
+  $('evm-pv').setAttribute('d',path(pv,T));
+  function draw(w){
+    $('evm-ev').setAttribute('d',path(ev,w));
+    $('evm-ac').setAttribute('d',path(ac,w));
+    $('evm-today').setAttribute('x1',px(w));$('evm-today').setAttribute('x2',px(w));
+    $('evm-dot-ev').setAttribute('cx',px(w));$('evm-dot-ev').setAttribute('cy',py(ev(w)));
+    $('evm-dot-ac').setAttribute('cx',px(w));$('evm-dot-ac').setAttribute('cy',py(ac(w)));
+    var wk=Math.max(1,Math.round(w));
+    $('evm-week').textContent='Semana '+wk+' de '+T;
+    var cpi=ev(w)/ac(w), spi=ev(w)/pv(w);
+    if(!isFinite(cpi))cpi=1; if(!isFinite(spi))spi=1;
+    $('evm-cpi').textContent=cpi.toFixed(2);
+    $('evm-spi').textContent=spi.toFixed(2);
+    var cs=$('evm-cpi-s'), ss=$('evm-spi-s');
+    var cOk=cpi>=0.995;
+    cs.textContent=cOk?'Dentro de presupuesto':'Sobrecosto de '+Math.max(1,Math.round((1/cpi-1)*100))+'%: alerta temprana';
+    cs.className='evm-kpi-s '+(cOk?'ok':'warn');
+    ss.textContent=spi>=0.995?'En programa':'Atraso de '+Math.max(1,Math.round((1-spi)*100))+'%: alerta temprana';
+    ss.className='evm-kpi-s '+(spi>=0.995?'ok':'warn');
   }
-},{threshold:0.5});
-var statsEl=document.querySelector('.hero-stats');
-if(statsEl)statObs.observe(statsEl);
-function animCount(el,from,to,dur,suffix){
-  var start=null;
+  var range=$('evm-range'), target=+range.value;
+  range.addEventListener('input',function(){draw(+range.value);});
+  if(REDUCED){draw(target);return;}
+  var t0=null,dur=2200;
   function step(ts){
-    if(!start)start=ts;
-    var p=Math.min((ts-start)/dur,1);
-    el.textContent=Math.round(from+(to-from)*p)+suffix;
+    if(!t0)t0=ts;
+    var p=Math.min((ts-t0)/dur,1), e=1-Math.pow(1-p,3);
+    draw(2+(target-2)*e);
     if(p<1)requestAnimationFrame(step);
-    else el.textContent=to+suffix;
   }
-  requestAnimationFrame(step);
-}
+  draw(2);
+  setTimeout(function(){requestAnimationFrame(step);},500);
+})();
+
+// CÓMO TRABAJAMOS: riel de fases
+(function(){
+  var g=document.querySelector('.fases-grid');
+  if(!g)return;
+  new IntersectionObserver(function(es,o){es.forEach(function(e){if(e.isIntersecting){g.classList.add('run');o.disconnect();}});},{threshold:0.4}).observe(g);
+})();
+
+// SERVICIOS: lista + panel (en móvil, acordeón)
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('.svc-btn'));
+  var panel=document.getElementById('svc-panel');
+  if(!btns.length||!panel)return;
+  var mobile=window.matchMedia('(max-width:900px)');
+  function select(b,focus){
+    var wasOpen=b.getAttribute('aria-expanded')==='true';
+    btns.forEach(function(x){x.setAttribute('aria-selected','false');x.setAttribute('aria-expanded','false');x.tabIndex=-1;});
+    b.tabIndex=0;b.setAttribute('aria-selected','true');
+    if(!(mobile.matches&&wasOpen))b.setAttribute('aria-expanded','true');
+    panel.setAttribute('aria-labelledby',b.id);
+    panel.innerHTML='<div class="svc-panel-inner"><span class="svc-panel-num" aria-hidden="true">'+b.dataset.n+'</span>'+b.nextElementSibling.innerHTML+'</div>';
+    if(focus)b.focus();
+  }
+  btns.forEach(function(b,i){
+    b.tabIndex=i?-1:0;
+    b.addEventListener('click',function(){select(b);});
+    b.addEventListener('keydown',function(e){
+      var k=e.key,j=null;
+      if(k==='ArrowDown'||k==='ArrowRight')j=(i+1)%btns.length;
+      if(k==='ArrowUp'||k==='ArrowLeft')j=(i-1+btns.length)%btns.length;
+      if(k==='Home')j=0; if(k==='End')j=btns.length-1;
+      if(j!==null){e.preventDefault();select(btns[j],true);}
+    });
+  });
+})();
+
+// DESARROLLADORES: el rango del estimado se cierra por etapa
+(function(){
+  var steps=[].slice.call(document.querySelectorAll('.cost-step'));
+  var band=document.getElementById('cost-band'), det=document.getElementById('cost-detail');
+  if(!steps.length||!band||!det)return;
+  function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+  function select(i,focus){
+    steps.forEach(function(s,j){s.setAttribute('aria-selected',j===i?'true':'false');s.classList.toggle('done',j<i);s.tabIndex=j===i?0:-1;});
+    var s=steps[i];
+    band.style.width=s.dataset.w+'%';
+    det.innerHTML='<h4>'+esc(s.textContent)+'</h4><p>'+esc(s.dataset.what)+'</p><p class="cost-deliv"><strong>Entregable:</strong> '+esc(s.dataset.deliv)+'</p>';
+    if(focus)s.focus();
+  }
+  steps.forEach(function(s,i){
+    s.addEventListener('click',function(){select(i);});
+    s.addEventListener('keydown',function(e){
+      var j=null;
+      if(e.key==='ArrowRight')j=Math.min(i+1,steps.length-1);
+      if(e.key==='ArrowLeft')j=Math.max(i-1,0);
+      if(j!==null){e.preventDefault();select(j,true);}
+    });
+  });
+  select(0);
+})();
+
+// PMO: cifras que cuentan al aparecer
+(function(){
+  var els=document.querySelectorAll('[data-count]');
+  if(!els.length||REDUCED)return;
+  function fmt(el,v){var f=el.dataset.fmt;return f==='b'?'$'+v.toFixed(1)+'B':f==='lt'?'<'+Math.round(v):String(Math.round(v));}
+  var o=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!e.isIntersecting)return; o.unobserve(e.target);
+    var el=e.target,to=parseFloat(el.dataset.count),t0=null;
+    function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1400,1),k=1-Math.pow(1-p,3);el.textContent=fmt(el,to*k);if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  });},{threshold:0.6});
+  els.forEach(function(el){o.observe(el);});
+})();
 
 // NAVBAR ACTIVE LINK
 var sections=document.querySelectorAll('section[id]');
@@ -1198,8 +1449,11 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.qu
 // ── Auto-fill servicio based on necesidad ───────────────────
 
 function activarSector(el){
-  document.querySelectorAll('.sector-tab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active');
+  if(!el.classList.contains('active')){
+    document.querySelectorAll('.sector-tab').forEach(function(t){t.classList.remove('active');t.setAttribute('aria-expanded','false');});
+    el.classList.add('active');el.setAttribute('aria-expanded','true');
+    return;
+  }
   var bg=el.querySelector('.sector-tab-bg');
   var name=el.querySelector('.sector-tab-name');
   if(bg){
@@ -1208,12 +1462,19 @@ function activarSector(el){
     if(m){
       var lb=document.getElementById('sector-lightbox');
       document.getElementById('lb-img').src=m[1];
+      document.getElementById('lb-img').alt=name?name.textContent:'Sector';
       document.getElementById('lb-caption').textContent=name?name.textContent:'';
       lb.classList.add('open');
       document.body.style.overflow='hidden';
     }
   }
 }
+document.querySelectorAll('.sector-tab').forEach(function(t){
+  t.setAttribute('role','button');t.tabIndex=0;
+  t.setAttribute('aria-expanded',t.classList.contains('active')?'true':'false');
+  t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();activarSector(t);}});
+  if(window.matchMedia('(hover:hover)').matches)t.addEventListener('mouseenter',function(){if(!t.classList.contains('active'))activarSector(t);});
+});
 function closeLightbox(){
   document.getElementById('sector-lightbox').classList.remove('open');
   document.body.style.overflow='';
