@@ -264,6 +264,7 @@ section{width:100%;}
 .sector-tab-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 0.55s cubic-bezier(.4,0,.2,1);}
 .sector-tab:hover .sector-tab-bg{transform:scale(1.04);}
 .sector-tab-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,32,0.92) 0%,rgba(10,9,32,0.55) 45%,rgba(10,9,32,0.25) 100%);transition:background 0.4s;}
+.sector-tab.active .bg-logo-rb{background-position:right bottom;}
 .sector-tab.active .sector-tab-overlay{background:linear-gradient(to top,rgba(10,9,32,0.88) 0%,rgba(10,9,32,0.3) 60%,rgba(10,9,32,0.1) 100%);}
 .sector-tab-label{position:absolute;bottom:0;left:0;right:0;padding:1.5rem 1.25rem;transition:all 0.4s;}
 .sector-tab-num{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:0.4rem;opacity:0;transition:opacity 0.3s;}
@@ -942,7 +943,7 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
         <div class="sector-tab-bar"></div>
       </div>
       <div class="sector-tab" onclick="activarSector(this)">
-        <div class="sector-tab-bg" style="background-image:url('assets/img/sector-residencial.jpg');background-position:right bottom;"></div>
+        <div class="sector-tab-bg bg-logo-rb" style="background-image:url('assets/img/sector-residencial.jpg');"></div>
         <div class="sector-tab-overlay"></div>
         <div class="sector-tab-label">
           <div class="sector-tab-num">07</div>
