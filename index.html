@@ -19,8 +19,8 @@
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"HAID Project Management","description":"Gestión Integral de Proyectos de construcción en México y Centroamérica. Más de 23 años de trayectoria, portafolio superior a USD 3,000 millones.","url":"https://haid.com.mx","email":"contacto@haid.com.mx","areaServed":["México","Centroamérica"],"serviceType":"Dirección de Proyectos de Construcción"}
 </script>
 <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E1B6F3FZD6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E1B6F3FZD6');</script>
 <style>
 :root {
   --red: #A91428;
@@ -1506,7 +1506,9 @@ if(form){
       if(r.ok){
         form.style.display='none';
         document.getElementById('form-success').style.display='block';
-        if(window.gtag)gtag('event','form_submit',{'event_category':'contacto'});
+        // Lead confirmado por Formspree. Se usa generate_lead (evento recomendado de GA4) para no
+        // duplicar el form_submit que la medición mejorada registra en cada intento de envío.
+        if(window.gtag)gtag('event','generate_lead',{form_name:'contacto',servicio:data.get('servicio'),sector:data.get('sector')||'Sin especificar'});
         return;
       }
       return r.json().catch(function(){return {};}).then(function(j){
