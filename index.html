@@ -338,6 +338,9 @@ section{width:100%;}
 .form-submit{background:var(--red);color:#fff;border:none;padding:1rem 2rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:1rem;transition:background 0.2s;}
 .form-submit:hover{background:var(--red-dark);}
 .form-note{font-size:0.75rem;color:rgba(255,255,255,0.35);text-align:center;margin-top:0.5rem;}
+.form-error{background:rgba(169,20,40,0.18);border:1px solid var(--red-bright);color:#fff;padding:0.85rem 1rem;margin-top:0.75rem;font-size:0.88rem;line-height:1.5;}
+.form-error a{color:#fff;text-decoration:underline;}
+.form-submit:disabled{opacity:0.6;cursor:wait;}
 .form-success{display:none;background:rgba(0,92,0,0.2);border:1px solid var(--green);color:#fff;padding:1.5rem;text-align:center;}
 .contacto-info{}
 .contacto-info-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:2px;margin-bottom:1.5rem;}
@@ -1060,7 +1063,10 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
         <p class="section-eyebrow" style="color:var(--red);">Cuéntanos de tu proyecto</p>
         <h2 class="contacto-title">¿Vas a licitar tu obra, o ya empezó y no tienes visibilidad real del avance?</h2>
         <p class="contacto-sub">Respondemos en un máximo de 48 horas hábiles.</p>
+        <!-- Formspree: reemplaza FORMSPREE_FORM_ID por el ID del formulario (https://formspree.io/f/xxxxxxxx).
+             Los mensajes llegan al correo con el que se creó el formulario en Formspree. -->
         <form id="contact-form" action="https://formspree.io/f/FORMSPREE_FORM_ID" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="Nuevo contacto desde haid.com.mx">
           <!-- honeypot anti-spam -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <div class="form-grid">
@@ -1074,7 +1080,7 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
             </div>
             <div class="form-group">
               <label for="f-correo">Correo electrónico *</label>
-              <input type="email" id="f-correo" name="correo" required placeholder="tu@empresa.com">
+              <input type="email" id="f-correo" name="email" required placeholder="tu@empresa.com">
             </div>
             <div class="form-group">
               <label for="f-tel">Teléfono</label>
@@ -1151,10 +1157,11 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
             </div>
           </div>
           <div class="form-privacy">
-            <input type="checkbox" id="f-privacy" name="privacidad" required>
+            <input type="checkbox" id="f-privacy" name="privacidad" value="Aceptado" required>
             <label for="f-privacy">He leído y acepto el <a href="#" onclick="openPrivacy();return false;">aviso de privacidad</a>.</label>
           </div>
-          <button type="submit" class="form-submit">Enviar mensaje</button>
+          <button type="submit" class="form-submit" id="form-submit">Enviar mensaje</button>
+          <p class="form-error" id="form-error" role="alert" hidden></p>
           <p class="form-note">Respondemos en un máximo de 48 horas hábiles · contacto@haid.com.mx</p>
         </form>
         <div class="form-success" id="form-success">
@@ -1479,21 +1486,42 @@ function handleSelector(){
   }, 600);
 }
 
-// FORM SUBMIT
+// FORM SUBMIT (Formspree)
 var form=document.getElementById('contact-form');
 if(form){
+  var btn=document.getElementById('form-submit'), err=document.getElementById('form-error');
+  function showError(msg){
+    if(!/[.!?]$/.test(msg))msg+='.';
+    err.innerHTML=msg+' También puedes escribirnos a <a href="mailto:contacto@haid.com.mx">contacto@haid.com.mx</a>.';
+    err.hidden=false;
+  }
   form.addEventListener('submit',function(e){
     e.preventDefault();
+    err.hidden=true;
     if(!form.checkValidity()){form.reportValidity();return;}
+    if(form.action.indexOf('FORMSPREE_FORM_ID')!==-1){showError('El formulario todavía no está conectado.');return;}
     var data=new FormData(form);
+    // Enviar el texto de las opciones (p. ej. "México") en lugar de su código interno ("mx")
+    ['necesidad','pais'].forEach(function(n){
+      var s=form.elements[n];
+      if(s&&s.value)data.set(n,s.options[s.selectedIndex].text);
+    });
+    btn.disabled=true; btn.textContent='Enviando…';
     fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}})
     .then(function(r){
       if(r.ok){
         form.style.display='none';
         document.getElementById('form-success').style.display='block';
         if(window.gtag)gtag('event','form_submit',{'event_category':'contacto'});
-      }else{alert('Error al enviar. Por favor escríbenos directamente a contacto@haid.com.mx');}
-    }).catch(function(){alert('Error de conexión. Por favor escríbenos directamente a contacto@haid.com.mx');}); 
+        return;
+      }
+      return r.json().catch(function(){return {};}).then(function(j){
+        var d=j&&j.errors&&j.errors.map(function(x){return x.message;}).join(' ');
+        showError('No se pudo enviar el mensaje'+(d?': '+d:'.'));
+      });
+    })
+    .catch(function(){showError('No se pudo enviar el mensaje por un problema de conexión. Revisa tu internet e inténtalo de nuevo.');})
+    .then(function(){btn.disabled=false; btn.textContent='Enviar mensaje';});
   });
 }
 

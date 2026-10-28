@@ -6,4 +6,5 @@ Para verlo, abre `index.html` en el navegador. No necesita compilación.
 
 Pendientes antes de publicar:
 - Reemplazar `G-XXXXXXXXXX` (Google Analytics) por el ID real.
-- Reemplazar `FORMSPREE_FORM_ID` en el formulario de contacto.
+- Reemplazar `FORMSPREE_FORM_ID` en el formulario de contacto por el ID del formulario de Formspree
+  (los mensajes llegan al correo con el que se creó ese formulario).
