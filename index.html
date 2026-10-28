@@ -1067,6 +1067,7 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
              Los mensajes llegan al correo con el que se creó el formulario en Formspree. -->
         <form id="contact-form" action="https://formspree.io/f/mzeegqbj" method="POST" novalidate>
           <input type="hidden" name="_subject" value="Nuevo contacto desde haid.com.mx">
+          <input type="hidden" name="servicio" value="">
           <!-- honeypot anti-spam -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <div class="form-grid">
@@ -1088,7 +1089,7 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
             </div>
             <div class="form-group">
               <label for="f-necesidad">¿Qué necesitas?</label>
-              <select id="f-necesidad" name="necesidad" onchange="autoServicio()">
+              <select id="f-necesidad" name="necesidad">
                 <option value="">Seleccionar…</option>
                 <option value="planear">Planear un proyecto antes de construir</option>
                 <option value="licitar">Licitar y contratar mi obra</option>
@@ -1096,16 +1097,6 @@ footer{background:#1e2d4a;border-top:3px solid var(--red);}
                 <option value="costo">Conocer el costo de mi desarrollo</option>
                 <option value="inmueble">Administrar un inmueble</option>
                 <option value="pmo">Implementar una PMO / sistema de control</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="f-servicio">Tipo de servicio <small style="font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:normal;">(automático)</small></label>
-              <select id="f-servicio" name="servicio" style="opacity:0.7;pointer-events:none;" tabindex="-1" aria-label="Se llena automáticamente según la necesidad seleccionada">
-                <option value="">Seleccionar…</option>
-                <option>Dirección de Proyectos</option>
-                <option>Administración de Inmuebles</option>
-                <option>PMO Corporativa</option>
-                <option>Ambos</option>
               </select>
             </div>
             <div class="form-group">
@@ -1501,6 +1492,9 @@ if(form){
     if(!form.checkValidity()){form.reportValidity();return;}
     if(form.action.indexOf('FORMSPREE_FORM_ID')!==-1){showError('El formulario todavía no está conectado.');return;}
     var data=new FormData(form);
+    // Tipo de servicio para clasificar el lead (no se muestra al visitante)
+    var SERVICIO={planear:'Dirección de Proyectos',licitar:'Dirección de Proyectos',supervisar:'Dirección de Proyectos',costo:'Dirección de Proyectos',inmueble:'Administración de Inmuebles',pmo:'PMO Corporativa'};
+    data.set('servicio',SERVICIO[form.elements.necesidad.value]||'Sin especificar');
     // Enviar el texto de las opciones (p. ej. "México") en lugar de su código interno ("mx")
     ['necesidad','pais'].forEach(function(n){
       var s=form.elements[n];
@@ -1567,26 +1561,6 @@ function closeLightbox(){
   document.getElementById('sector-lightbox').classList.remove('open');
   document.body.style.overflow='';
 }
-function autoServicio(){
-  var v=document.getElementById('f-necesidad').value;
-  var sel=document.getElementById('f-servicio');
-  var map={
-    planear:'Dirección de Proyectos',
-    licitar:'Dirección de Proyectos',
-    supervisar:'Dirección de Proyectos',
-    costo:'Dirección de Proyectos',
-    inmueble:'Administración de Inmuebles',
-    pmo:'PMO Corporativa'
-  };
-  if(map[v]){
-    for(var i=0;i<sel.options.length;i++){
-      if(sel.options[i].text===map[v]){sel.selectedIndex=i;break;}
-    }
-  } else {
-    sel.selectedIndex=0;
-  }
-}
-
 // ── Cascading country → region ───────────────────────────────
 var REGIONES={
   mx:['Aguascalientes','Baja California','Baja California Sur','Campeche','Chiapas','Chihuahua','Ciudad de México','Coahuila','Colima','Durango','Estado de México','Guanajuato','Guerrero','Hidalgo','Jalisco','Michoacán','Morelos','Nayarit','Nuevo León','Oaxaca','Puebla','Querétaro','Quintana Roo','San Luis Potosí','Sinaloa','Sonora','Tabasco','Tamaulipas','Tlaxcala','Veracruz','Yucatán','Zacatecas'],
